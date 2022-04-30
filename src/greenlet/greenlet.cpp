@@ -2392,7 +2392,7 @@ green_repr(BorrowedGreenlet self)
     PyObject* result;
     int never_started = !self->started() && !self->active();
 
-    const char* const tp_name = Py_TYPE(self)->tp_name;
+    const char* const tp_name = Py_TYPE(self.borrow())->tp_name;
 
     if (_green_not_dead(self)) {
         /* XXX: The otid= is almost useless because you can't correlate it to

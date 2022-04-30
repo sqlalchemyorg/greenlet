@@ -990,7 +990,7 @@ namespace greenlet {
                                     "throw() third argument must be a traceback object");
             }
 
-            if (PyExceptionClass_Check(type)) {
+            if (PyExceptionClass_Check(type.borrow())) {
                 // If we just had a type, we'll now have a type and
                 // instance.
                 // The type's refcount will have gone up by one
@@ -1000,7 +1000,7 @@ namespace greenlet {
                 PyErr_NormalizeException(&type, &instance, &traceback);
 
             }
-            else if (PyExceptionInstance_Check(type)) {
+            else if (PyExceptionInstance_Check(type.borrow())) {
                 /* Raising an instance. The value should be a dummy. */
                 if (instance && !instance.is_None()) {
                     throw PyErrOccurred(

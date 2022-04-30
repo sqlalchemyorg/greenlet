@@ -397,8 +397,8 @@ public:
                     }
                     else if (refs
                              && refs.size() == 1
-                             && PyCFunction_Check(refs.at(0))
-                             && Py_REFCNT(refs.at(0)) == 2) {
+                             && PyCFunction_Check(refs.at(0).borrow())
+                             && Py_REFCNT(refs.at(0).borrow()) == 2) {
                         assert(refs.REFCNT() == 1);
                         // Ok, we found a C method that refers to the
                         // main greenlet, and its only referenced
@@ -419,7 +419,8 @@ public:
                             if (refs && refs.empty()) {
                                 // Nope, it can't be found so it won't
                                 // ever be GC'd. Drop it.
-                                Py_CLEAR(function_w);
+                                PyObject * tmp = function_w.borrow();
+                                Py_CLEAR(tmp);
                             }
                         }
                     }
